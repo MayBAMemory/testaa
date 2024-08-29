@@ -16,12 +16,10 @@ int sendBFile(int netFd) {
   memset(&train, 0, sizeof(train));
   train.buf_size = stat.st_size;
   send(netFd, &train.buf_size,  sizeof(off_t), MSG_NOSIGNAL);
-  printf("%d\n",train.buf_size);
 
   memset(&train, 0, sizeof(train));
   train.buf_size = strlen(fileName);
   memcpy(train.buf, fileName, train.buf_size);
-  printf("%s\n",train.buf);
 
   // 发送文件名长度与文件名
   int ret_send = send(netFd, &train, sizeof(int) + train.buf_size, MSG_NOSIGNAL);
