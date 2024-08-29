@@ -1,7 +1,7 @@
 #include <my_header.h>
 
 int main(int argc, char *argv[]) { 
-  alsdjkasljl;
+  printf("asdasdasdas\n");
 
   return 0; 
 }
