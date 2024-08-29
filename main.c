@@ -33,6 +33,7 @@ int main(){
         
         pthread_mutex_lock(&pool.pool_lock);
         enQuene(&pool.queue, net_fd);
+
         pthread_cond_signal(&pool.cond);
         pthread_mutex_unlock(&pool.pool_lock);
       }
