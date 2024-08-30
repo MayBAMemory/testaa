@@ -23,6 +23,7 @@ int deQuene(queue_t *pQueue){
   node_t *p = pQueue->head;
   pQueue->head = p->pNext;
 
+  //队列中只有一个成员
   if(pQueue->size == 1){
     pQueue->head = NULL;
     pQueue->end = NULL;
