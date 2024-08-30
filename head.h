@@ -18,6 +18,8 @@ typedef struct pool_s{
 
   //条件
   pthread_cond_t cond;
+
+  int exitFlag;
 }pool_t;
 
 int initSocket(int *socketFd, char *port, char *ip);
