@@ -4,6 +4,7 @@ int initPool(pool_t *status, int num){
   status->threadIds = calloc(num,sizeof(pthread_t));
   for(int i = 0; i < num; i++){
     pthread_create(&status->threadIds[i],NULL,threadMain,status);
+    printf("created a thread\n");
   }
   //记录线程个数
   status->threadNum = num;
