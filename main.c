@@ -2,23 +2,19 @@
 
 int pipeFd[2];
 void func(int num) {
-  printf("hehe\n");
   write(pipeFd[1], "1", 1); // 写,可让pipeFd[0]读就绪
-  return;
 }
 
 int main() {
   pipe(pipeFd);
   if (fork() != 0) { // 父进程
-    signal(SIGINT, func);
+    signal(2, func);
     wait(NULL);
     printf("子进程已退出\n");
-    close(pipeFd[1]);
     exit(0);
   }
   // 子进程
   setpgid(0, 0);
-  close(pipeFd[1]);
   pool_t pool;
   initPool(&pool, 4);
 
@@ -30,9 +26,19 @@ int main() {
 
   epollAddFd(epollFd, pipeFd[0]);
   while (1) {
-    struct epoll_event ev[1024];
-    int epollNum = epoll_wait(epollFd, ev, 1024, -1);
-
+    struct epoll_event ev[10];
+    int epollNum = epoll_wait(epollFd, ev, 10, -1);
+     if (epollNum == -1) {
+        if (errno == EINTR) {
+            // 被信号中断，继续等待
+            continue;
+        } else {
+            // 打印错误信息
+            perror("epoll_wait error");
+            exit(EXIT_FAILURE);
+        }
+    }
+    printf("%d\n",epollNum);
     for (int i = 0; i < epollNum; i++) {
       int fd = ev[i].data.fd;
       // 新连接
@@ -59,8 +65,8 @@ int main() {
         pthread_cond_broadcast(&pool.cond);
         pthread_mutex_unlock(&pool.pool_lock);
 
-        for (int i = 0; i < pool.threadNum; i++) {
-          pthread_join(pool.threadIds[i], NULL);
+        for (int k = 0; k < pool.threadNum; k++) {
+          pthread_join(pool.threadIds[k], NULL);
           printf("ok\n");
         }
         printf("子线程清理完毕\n");

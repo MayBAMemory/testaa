@@ -1,6 +1,8 @@
 #include "head.h"
 
 int initPool(pool_t *status, int num){
+  status->exitFlag = 0;
+  status->threadNum = num;
   status->threadIds = calloc(num,sizeof(pthread_t));
   for(int i = 0; i < num; i++){
     pthread_create(&status->threadIds[i],NULL,threadMain,status);
