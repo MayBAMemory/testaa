@@ -8,6 +8,7 @@ void func(int num) {
 int main() {
   pipe(pipeFd);
   if (fork() != 0) { // 父进程
+//alskdjkasldjaskljdklj
     signal(2, func);
     wait(NULL);
     printf("子进程已退出\n");
