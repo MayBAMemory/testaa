@@ -11,7 +11,7 @@ int main() {
     signal(2, func);
     wait(NULL);
     printf("子进程已退出\n");
-
+    //typedef struct :wq :wq;
     exit(0);
   }
   // 子进程
